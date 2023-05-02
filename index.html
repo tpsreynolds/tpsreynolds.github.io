@@ -1,0 +1,160 @@
+<html>
+<head>
+    <title>Deployable structure \ Examples \ Processing.org</title>
+
+    <!-- script type="text/javascript" src="/_ah/channel/jsapi"></script -->
+    <script src="processing.js" type="text/javascript"></script>    
+    <!-- script src="http://processing.org/javascript/modernizr-2.6.2.touch.js" type ="!text/javascript"></script -->
+</head>
+
+<body>
+    <label>once</label>
+    <br>
+    <div class="proc">
+    <script type="application/processing"> 
+// Define variables
+  float angle1 = 0;
+  float angle2 = 0;
+  float angle1a;
+  float angle2a;
+  float angle3;
+  float length1 = 70;
+  float length2 = 70;
+  float length3 = 70;
+  float length4 = 70;
+  float length5;
+  float x1, y1, x2, y2, x3, y3, x4, y4, x5, y5;
+  float x1a, y1a, x2a, y2a, x3a, y3a, x4a, y4a, x5a, y5a;
+  float[] scissorEnds = new float[4];
+
+
+void setup() {
+  // Set canvas size
+  size(1000, 1000);
+  
+
+  // Set initial position
+  x1 = width/2-length1;
+  y1 = height/10;
+  x2 = width/2+length2;
+  y2 = height/10;
+}
+
+void draw() {
+  // Clear background
+  background(255);
+
+  // Calculate the angle of the second beam
+  length5 = x2-x1;
+  angle2 = acos((sq(length2)+sq(length5)-sq(length1))/(2*length2*length5));
+
+  // Calculate hinge location
+  x3 = x1 + length1 * cos(angle1);
+  y3 = y1 + length1 * sin(angle1);
+
+  // Calculate endpoint of first beam
+  x4 = x3 + length3 * cos(angle1);
+  y4 = y3 + length3 * sin(angle1);
+  
+  // Calculate x coordinate of start of second beam
+  x2 = x3 + length2 * cos(angle2);
+  
+  // Calculate endpoint of second beam
+  x5 = x3 - length4 * cos(angle2);
+  y5 = y3 + length4 * sin(angle2);
+  
+
+  // Draw first beam
+  stroke(0,255,0);
+  strokeWeight(8);
+  line(x1, y1, x4, y4);
+
+  // Draw second beam  
+  stroke(0,0,255);
+  line(x2, y2, x5, y5);
+
+  // Draw hinge
+  stroke(255, 0, 0);
+  strokeWeight(16);
+  point(x3, y3);
+
+  // Update angle1 and angle2 based on mouse position
+  if(mousePressed){
+   
+    angle1 = atan2(mouseY - y1, mouseX - x1);
+
+  }
+  
+  scissorEnds[0]=x5;
+  scissorEnds[1]=y5;
+  scissorEnds[2]=x4;
+  scissorEnds[3]=y4;
+  
+  for (int i = 0; i < 6; i++) { 
+    drawScissor(scissorEnds); 
+  } 
+  
+}
+
+float[] drawScissor(float[] scissorEnds) {
+  
+  x1a=scissorEnds[0];
+  y1a=scissorEnds[1];
+  x2a=scissorEnds[2];
+  y2a=scissorEnds[3];
+  
+  // Draw new hinges
+  stroke(255, 0, 0);
+  strokeWeight(16);
+  point(x1a, y1a);
+  point(x2a, y2a);
+  
+  // Calculate hinge location
+  angle3 = atan((y2a-y1a)/(x2a-x1a));
+  length5 = sqrt(sq(x2a-x1a)+sq(y2a-y1a));
+  angle1a = angle3 + acos((sq(length1)+sq(length5)-sq(length2))/(2*length1*length5));
+  angle2a = acos((sq(length2)+sq(length5)-sq(length1))/(2*length2*length5)) - angle3;
+  
+  x3a = x1a + length1 * cos(angle1a);
+  y3a = y1a + length1 * sin(angle1a);
+
+  // Calculate endpoint of first beam
+  x4a = x3a + length3 * cos(angle1a);
+  y4a = y3a + length3 * sin(angle1a);
+  
+  // Calculate endpoint of second beam
+  x5a = x3a - length4 * cos(angle2a);
+  y5a = y3a + length4 * sin(angle2a);
+  
+
+  // Draw first beam
+  stroke(0,255,0);
+  strokeWeight(8);
+  line(x1a, y1a, x4a, y4a);
+
+  // Draw second beam  
+  stroke(0,0,255);
+  line(x2a, y2a, x5a, y5a);
+
+  // Draw hinge
+  stroke(255, 0, 0);
+  strokeWeight(16);
+  point(x3a, y3a);
+  
+  scissorEnds[0]=x5a;
+  scissorEnds[1]=y5a;
+  scissorEnds[2]=x4a;
+  scissorEnds[3]=y4a;
+  
+  return scissorEnds;
+  
+  
+}
+
+    </script>
+    <canvas></canvas>
+    <div>this is below the canvas</div>
+
+
+</body> 
+  
