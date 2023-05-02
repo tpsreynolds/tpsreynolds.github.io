@@ -31,13 +31,11 @@
   float[] scissorEnds = new float[4];
   
 // Slider
-  float slider_width = 50;
-  float slider_height = 10;
+  float slider_width = 10;
   float posx, posy;
   boolean over = false;
   boolean locked = false;
-  float xoff;
-  float fundo;
+  float yoff;
 
 
 void setup() {
@@ -53,9 +51,9 @@ void setup() {
   
   // Slider
   rectMode(CENTER);
-  posx = width/2;
-  posy = 9*height/10;
-  line (posx, posy, posx+100, posy);
+  posx = width/10;
+  posy = height/2;
+  line (posx, posy, posx, posy+100);
 }
 
 void draw() {
@@ -100,7 +98,7 @@ void draw() {
 
   // Update angle1 and angle2 based on mouse position
   if(mousePressed){
-    if (mouseY<8*height/10)   {
+    if (mouseX>2*width/10)   {
     angle1 = atan2(abs(mouseY - y1), abs(mouseX - x1));
     }
     if (angle1 > 0.785)  {
@@ -120,14 +118,13 @@ void draw() {
   
   // Slider
   
-    fundo = posx;
   stroke (0,255,0);
-  line (150, posy, posx, posy);
+  line (posx, 150, posx, posy);
   stroke (0,0,255);
-  line (posx, posy, 850, posy);
+  line (posx, posy, posx, 850);
   
   
-  if (dist(mouseX, mouseY, posx, posy) < slider_height) {
+  if (dist(mouseX, mouseY, posx, posy) < slider_width) {
     over = true;
   }
   else {
@@ -135,19 +132,19 @@ void draw() {
     over = false;
   }
   
-  if (posx < 175) {
-  posx = 175;
+  if (posy < 175) {
+  posy = 175;
   }
 
-  if (posx > 825) {
-  posx = 825;
+  if (posy > 825) {
+  posy = 825;
   }
   
   if (angle1 == 0) {
-  posx = width/2;
+  posy = height/2;
   }
   
-  length1=50+(posx-150)/(850-150)*40;
+  length1=50+(posy-150)/(850-150)*40;
   length2=140-length1;
   length3=140-length1;
   length4=length1;
@@ -214,12 +211,12 @@ float[] drawScissor(float[] scissorEnds) {
 void mousePressed() {
   if (over) {
     locked = true;
-    xoff = mouseX-posx;
+    yoff = mouseY-posy;
   }
 }
 void mouseDragged() {
   if (locked) {
-    posx = mouseX-xoff;
+    posy = mouseY-yoff;
   }
 }
 void mouseReleased() {
