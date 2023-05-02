@@ -15,6 +15,8 @@
     <div class="proc">
     <script type="application/processing"> 
 // Define variables
+
+// Scissors
   float angle1 = 0;
   float angle2 = 0;
   float angle1a;
@@ -28,6 +30,15 @@
   float x1, y1, x2, y2, x3, y3, x4, y4, x5, y5;
   float x1a, y1a, x2a, y2a, x3a, y3a, x4a, y4a, x5a, y5a;
   float[] scissorEnds = new float[4];
+  
+// Slider
+  float slider_width = 50;
+  float slider_height = 10;
+  float posx, posy;
+  boolean over = false;
+  boolean locked = false;
+  float xoff;
+  float fundo;
 
 
 void setup() {
@@ -40,6 +51,12 @@ void setup() {
   y1 = height/10;
   x2 = width/2+length2;
   y2 = height/10;
+  
+  // Slider
+  rectMode(CENTER);
+  posx = width/2;
+  posy = 9*height/10;
+  line (posx, posy, posx+100, posy);
 }
 
 void draw() {
@@ -84,8 +101,12 @@ void draw() {
 
   // Update angle1 and angle2 based on mouse position
   if(mousePressed){
-   
-    angle1 = atan2(mouseY - y1, abs(mouseX - x1));
+    if (mouseY<8*height/10)   {
+    angle1 = atan2(abs(mouseY - y1), abs(mouseX - x1));
+    }
+    if (angle1 > 0.785)  {
+      angle1 = 0.785;
+    }
 
   }
   
@@ -96,7 +117,41 @@ void draw() {
   
   for (int i = 0; i < 6; i++) { 
     drawScissor(scissorEnds); 
-  } 
+  }
+  
+  // Slider
+  
+    fundo = posx;
+  stroke (0,255,0);
+  line (150, posy, posx, posy);
+  stroke (0,0,255);
+  line (posx, posy, 850, posy);
+  
+  
+  if (dist(mouseX, mouseY, posx, posy) < slider_height) {
+    over = true;
+  }
+  else {
+    fill(255);
+    over = false;
+  }
+  
+  if (posx < 175) {
+  posx = 175;
+  }
+
+  if (posx > 825) {
+  posx = 825;
+  }
+  
+  if (angle1 == 0) {
+  posx = width/2;
+  }
+  
+  length1=50+(posx-150)/(850-150)*40;
+  length2=140-length1;
+  length3=140-length1;
+  length4=length1;
   
 }
 
@@ -155,6 +210,21 @@ float[] drawScissor(float[] scissorEnds) {
   return scissorEnds;
   
   
+}
+
+void mousePressed() {
+  if (over) {
+    locked = true;
+    xoff = mouseX-posx;
+  }
+}
+void mouseDragged() {
+  if (locked) {
+    posx = mouseX-xoff;
+  }
+}
+void mouseReleased() {
+  locked = false;
 }
 
     </script>
