@@ -16,6 +16,7 @@
 // Define variables
 
 // Scissors
+  int n=6;
   float angle1 = 0;
   float angle2 = 0;
   float angle1a;
@@ -40,18 +41,18 @@
 
 void setup() {
   // Set canvas size
-  size(1000, 1000);
+  size(1200, 800);
   
 
   // Set initial position
   x1 = width/2-length1;
-  y1 = height/10;
+  y1 = height/6;
   x2 = width/2+length2;
-  y2 = height/10;
+  y2 = height/6;
   
   // Slider
   rectMode(CENTER);
-  posx = width/10;
+  posx = width/8;
   posy = height/2;
   line (posx, posy, posx, posy+100);
 }
@@ -99,8 +100,10 @@ void draw() {
   // Update angle1 and angle2 based on mouse position
   if(mousePressed){
     if (mouseX>2*width/10)   {
-    angle1 = atan2(abs(mouseY - y1), abs(mouseX - x1));
+    angle1 = 0.785*mouseY/height;
     }
+    else { posy = mouseY; }
+    
     if (angle1 > 0.785)  {
       angle1 = 0.785;
     }
@@ -112,16 +115,16 @@ void draw() {
   scissorEnds[2]=x4;
   scissorEnds[3]=y4;
   
-  for (int i = 0; i < 6; i++) { 
+  for (int i = 0; i < n; i++) { 
     drawScissor(scissorEnds); 
   }
   
   // Slider
   
   stroke (0,255,0);
-  line (posx, 150, posx, posy);
+  line (posx, height/6, posx, posy);
   stroke (0,0,255);
-  line (posx, posy, posx, 850);
+  line (posx, posy, posx, 5*height/6);
   
   
   if (dist(mouseX, mouseY, posx, posy) < slider_width) {
@@ -132,19 +135,19 @@ void draw() {
     over = false;
   }
   
-  if (posy < 175) {
-  posy = 175;
+  if (posy < height/6) {
+  posy = height/6;
   }
 
-  if (posy > 825) {
-  posy = 825;
+  if (posy > 5*height/6) {
+  posy = 5*height/6;
   }
   
   if (angle1 == 0) {
   posy = height/2;
   }
   
-  length1=50+(posy-150)/(850-150)*40;
+  length1=50+(posy-height/6)/(4*height/6)*40;
   length2=140-length1;
   length3=140-length1;
   length4=length1;
@@ -206,21 +209,6 @@ float[] drawScissor(float[] scissorEnds) {
   return scissorEnds;
   
   
-}
-
-void mousePressed() {
-  if (over) {
-    locked = true;
-    yoff = mouseY-posy;
-  }
-}
-void mouseDragged() {
-  if (locked) {
-    posy = mouseY-yoff;
-  }
-}
-void mouseReleased() {
-  locked = false;
 }
 
     </script>
