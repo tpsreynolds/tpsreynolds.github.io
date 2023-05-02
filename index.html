@@ -66,14 +66,16 @@ void draw() {
   y5 = y3 + length4 * sin(angle2);
   
 
-  // Draw first beam
+  // Draw first beam colour
   stroke(0,255,0);
   strokeWeight(8);
-  line(x1, y1, x4, y4);
+  line(x1, y1, x3, y3);
+  line(x3, y3, x5, y5);
 
-  // Draw second beam  
+  // Draw second beam colour 
   stroke(0,0,255);
-  line(x2, y2, x5, y5);
+  line(x2, y2, x3, y3);
+  line(x3, y3, x4, y4);
 
   // Draw hinge
   stroke(255, 0, 0);
@@ -129,14 +131,16 @@ float[] drawScissor(float[] scissorEnds) {
   y5a = y3a + length4 * sin(angle2a);
   
 
-  // Draw first beam
+  // Draw first beam colour
   stroke(0,255,0);
   strokeWeight(8);
-  line(x1a, y1a, x4a, y4a);
+  line(x1a, y1a, x3a, y3a);
+  line(x3a, y3a, x5a, y5a);
 
-  // Draw second beam  
+  // Draw second beam colour 
   stroke(0,0,255);
-  line(x2a, y2a, x5a, y5a);
+  line(x2a, y2a, x3a, y3a);
+  line(x3a, y3a, x4a, y4a);
 
   // Draw hinge
   stroke(255, 0, 0);
